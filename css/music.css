@@ -1,0 +1,41 @@
+/* Background Music */
+
+.bgm {
+    width: 18px;
+    height: 20px;
+    cursor: pointer;
+    position: absolute;
+    left: 50px;
+    bottom: 45%;
+}
+
+.bgm span {
+    background: #00ff00;
+    width: 3px;
+    height: 0px;
+    bottom: 0;
+    left: 0%;
+    display: block;
+    position: absolute;
+    transition: height 0.2s linear;
+}
+
+.bgm span:nth-child(1) {
+    margin-left: 5px;
+}
+
+.bgm span:nth-child(2) {
+    margin-left: 10px;
+}
+
+.bgm span:nth-child(4) {
+    margin-left: 15px;
+}
+
+.bgm span:nth-child(5) {
+    margin-left: 20px;
+}
+
+.bgm.paused span {
+    height: 3px !important;
+}

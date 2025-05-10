@@ -1,0 +1,89 @@
+var audio = new Audio();
+var source =
+  sessionStorage.getItem("bgmSource") || "music/Eshay(PaglaSongs).mp3";
+var isPlaying = sessionStorage.getItem("bgmPlaying") === true || false;
+var playbackTime = parseFloat(sessionStorage.getItem("bgmPlaybackTime")) || 0;
+
+const songBTN = document.querySelector(".songBtn");
+
+audio.src = source;
+audio.loop = true;
+audio.volume = 0.2;
+isPlaying = true;
+
+audio.addEventListener(
+  "load",
+  function () {
+    audio.play();
+  },
+  true
+);
+
+function toggleAudio() {
+  if (isPlaying) {
+    audio.play();
+  } else {
+    audio.pause();
+  }
+}
+$(".bgm").click();
+
+$(".bgm").click(function () {
+  isPlaying = !isPlaying;
+  toggleAudio();
+  sessionStorage.setItem("bgmPlaying", isPlaying);
+});
+
+audio.addEventListener("loadedmetadata", function () {
+  sessionStorage.setItem("bgmSource", audio.src);
+
+  audio.currentTime = playbackTime;
+});
+
+audio.addEventListener("timeupdate", function () {
+  sessionStorage.setItem("bgmPlaybackTime", audio.currentTime);
+});
+
+function randomBetween(range) {
+  var min = range[0],
+    max = range[1];
+  if (min < 0) {
+    return min + Math.random() * (Math.abs(min) + max);
+  } else {
+    return min + Math.random() * max;
+  }
+}
+
+$.fn.bgmAnimation = function (speed, barsHeight) {
+  var $bgm = $(this);
+  setInterval(function () {
+    $bgm.find("span").each(function (i) {
+      $(this).css({
+        height: randomBetween(barsHeight[i]) + "px",
+      });
+    });
+  }, speed);
+  $bgm.on("click", function () {
+    $bgm.toggleClass("paused");
+  });
+};
+
+var barsHeight = [
+  [2, 10],
+  [5, 14],
+  [11, 8],
+  [4, 18],
+  [8, 3],
+];
+
+$(".bgm").bgmAnimation(180, barsHeight);
+toggleAudio();
+
+songBTN.addEventListener("click", function (event) {
+  event.preventDefault();
+  sessionStorage.removeItem("bgmPlaying");
+  sessionStorage.removeItem("bgmPlaybackTime");
+  audio.currentTime = 0;
+  playbackTime = 0;
+  isPlaying = true;
+});
